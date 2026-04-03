@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-md bg-white/70 dark:bg-dark-200/50 border border-white/20 shadow-xl;
+  }
+  .gradient-text {
+    @apply bg-gradient-to-r from-purple-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent bg-[length:300%_300%] animate-gradient-x;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+@layer base {
+  body {
+    @apply text-gray-900 dark:text-white;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-gray-900 dark:text-white;
+  }
+}
+body {
+  background-color: #ffffff;
+  color: #1a202c;
+  transition-property: background-color, color;
+  transition-duration: 300ms;
+font-family: "Inter Tight", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.headline {
+  font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a202c;
+    color: #ffffff;
+  }
+}
