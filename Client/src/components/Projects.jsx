@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
-import { FiGithub, FiExternalLink, FiEye, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiGithub, FiExternalLink, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import VideoEditor from '../assets/Video-editor.png';
 import Inuproject from '../assets/inu.png';
 import Hotel from '../assets/hotel-booking.png';
@@ -53,21 +53,7 @@ const Projects = () => {
       fullDescription: '...',
       technologies: ['React', 'Node.js', 'MySQL'],
       features: ['Search by city/name', 'Booking system']
-    },
-    {
-      id: 4,
-      title: 'Project 4',
-      description: 'Description for project 4.',
-      image: 'https://via.placeholder.com/400x300',
-      tags: ['React', 'Node.js'],
-      category: 'backend',
-      liveUrl: '#',
-      githubUrl: '#',
-      fullDescription: 'Detailed description for project 4.',
-      technologies: ['React', 'Node.js'],
-      features: ['Feature 1', 'Feature 2']  
     }
-    // Add more projects as needed
   ];
 
   const filters = [
@@ -81,7 +67,6 @@ const Projects = () => {
     ? projects 
     : projects.filter(p => p.category === activeFilter);
 
-  // Update cards per view based on window width
   useEffect(() => {
     const updateCardsPerView = () => {
       if (window.innerWidth < 768) setCardsPerView(1);
@@ -103,7 +88,6 @@ const Projects = () => {
     if (currentIndex > 0) setCurrentIndex(prev => prev - 1);
   };
 
-  // Reset index when filter changes
   useEffect(() => {
     setCurrentIndex(0);
   }, [activeFilter]);
@@ -144,8 +128,7 @@ const Projects = () => {
 
           {/* Carousel Container */}
           {filteredProjects.length > 0 && (
-            <div className="relative overflow-hidden top-0 " ref={carouselRef}>
-              {/* Left Arrow */}
+            <div className="relative overflow-hidden" ref={carouselRef}>
               {totalPages > 1 && currentIndex > 0 && (
                 <button
                   onClick={prevSlide}
@@ -156,7 +139,6 @@ const Projects = () => {
                 </button>
               )}
 
-              {/* Right Arrow */}
               {totalPages > 1 && currentIndex < maxIndex && (
                 <button
                   onClick={nextSlide}
@@ -167,7 +149,6 @@ const Projects = () => {
                 </button>
               )}
 
-              {/* Carousel Track */}
               <div className="overflow-hidden">
                 <div
                   className="flex transition-transform duration-500 ease-out"
@@ -177,10 +158,13 @@ const Projects = () => {
                     <div key={pageIdx} className="flex w-full flex-shrink-0 gap-6 px-2">
                       {filteredProjects
                         .slice(pageIdx * cardsPerView, (pageIdx + 1) * cardsPerView)
-                        .map((project, idx) => (
+                        .map((project) => (
                           <div key={project.id} className="w-full md:w-1/2 lg:w-1/3 flex-shrink-0">
-                            <div className="glass rounded-2xl overflow-hidden group h-full">
-                              {/* Image */}
+                            {/* Entire card is a clickable Link */}
+                            <Link
+                              to={`/project/${project.id}`}
+                              className="glass rounded-2xl overflow-hidden group h-full block transition-transform duration-300 hover:scale-[1.02]"
+                            >
                               <div className="relative overflow-hidden h-48">
                                 <img
                                   src={project.image}
@@ -189,7 +173,6 @@ const Projects = () => {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-dark-300/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                               </div>
-                              {/* Content */}
                               <div className="p-6">
                                 <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
                                   {project.title}
@@ -206,19 +189,30 @@ const Projects = () => {
                                 </div>
                                 <div className="flex justify-between items-center">
                                   <div className="flex gap-4">
-                                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-2xl text-gray-600 dark:text-gray-400 hover:text-purple-500 transition">
+                                    <a
+                                      href={project.liveUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="text-2xl text-gray-600 dark:text-gray-400 hover:text-purple-500 transition"
+                                      aria-label="Live Demo"
+                                    >
                                       <FiExternalLink />
                                     </a>
-                                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-2xl text-gray-600 dark:text-gray-400 hover:text-purple-500 transition">
+                                    <a
+                                      href={project.githubUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="text-2xl text-gray-600 dark:text-gray-400 hover:text-purple-500 transition"
+                                      aria-label="GitHub"
+                                    >
                                       <FiGithub />
                                     </a>
                                   </div>
-                                  <Link to={`/project/${project.id}`} className="flex items-center gap-1 text-sm text-purple-500 hover:text-purple-600 transition">
-                                    <FiEye /> Details
-                                  </Link>
                                 </div>
                               </div>
-                            </div>
+                            </Link>
                           </div>
                         ))}
                     </div>
@@ -226,7 +220,6 @@ const Projects = () => {
                 </div>
               </div>
 
-              {/* Dots */}
               {totalPages > 1 && (
                 <div className="flex justify-center gap-2 mt-8">
                   {Array.from({ length: totalPages }).map((_, idx) => (

@@ -1,20 +1,30 @@
 import { useInView } from 'react-intersection-observer';
-import { motion, useSpring, useTransform } from 'framer-motion';
-import { useEffect } from 'react';
+import { motion, useSpring, useMotionValueEvent } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import profile from '../assets/profile.png';
 
-const Counter = ({ value, label }) => {
+const Counter = ({ value, label, suffix = '+' }) => {
   const [ref, inView] = useInView({ triggerOnce: true });
   const spring = useSpring(0, { damping: 20, stiffness: 50 });
-  const display = useTransform(spring, (val) => Math.floor(val));
+  const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
-    if (inView) spring.set(value);
+    if (inView) {
+      spring.set(value);
+    } else {
+      spring.set(0);
+    }
   }, [inView, spring, value]);
+
+  useMotionValueEvent(spring, "change", (latest) => {
+    setDisplayValue(Math.floor(latest));
+  });
 
   return (
     <div ref={ref} className="text-center">
-      <motion.div className="text-4xl font-bold gradient-text">{display}</motion.div>
+      <motion.div className="text-4xl font-bold gradient-text">
+        {displayValue}{suffix}
+      </motion.div>
       <div className="text-gray-600 dark:text-gray-400 mt-2">{label}</div>
     </div>
   );
@@ -52,12 +62,15 @@ const About = () => {
             className="md:w-2/3"
           >
             <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6">
-            I'm a passionate Full-Stack Developer who enjoys building reliable systems and modern web applications. I focus on writing clean, scalable code and creating efficient solutions to real-world problems while continuously learning new technologies.
+              I'm a dedicated Full‑Stack Developer with a passion for building robust, user‑centric web applications. 
+              I specialize in the MERN stack, RESTful APIs, and modern frontend frameworks. 
+              My approach combines clean code, performance optimization, and a keen eye for design. 
+              I thrive on solving complex problems and continuously expanding my skill set to stay ahead in the fast‑evolving tech landscape.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-8">
-              <Counter value={1} label="Years Experience" />
-              <Counter value={20} label="Projects Completed" />
-              <Counter value={5} label="Technologies" />
+              <Counter value={1} label="Years Experience" suffix="+" />
+              <Counter value={20} label="Projects Completed" suffix="+" />
+              <Counter value={10} label="Technologies Mastered" suffix="+" />
             </div>
           </motion.div>
         </div>
