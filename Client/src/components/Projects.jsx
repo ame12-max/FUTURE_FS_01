@@ -3,58 +3,44 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { FiGithub, FiExternalLink, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import VideoEditor from '../assets/Video-editor.png';
-import Inuproject from '../assets/inu.png';
-import Hotel from '../assets/hotel-booking.png';
+import axios from 'axios';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 const Projects = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
   const carouselRef = useRef(null);
 
-  const projects = [
-    {
-      id: 1,
-      title: 'Video Editor Portfolio',
-      description: 'A responsive portfolio website for a video editor showcasing projects and skills.',
-      image: VideoEditor,
-      tags: ['React', 'Express', 'Resend Mail API', 'Tailwind CSS'],
-      category: 'frontend',
-      liveUrl: 'https://epicedits-siol.vercel.app/',
-      githubUrl: 'https://github.com/ame12-max/video-editor-porifolio',
-      fullDescription: 'Detailed description...',
-      technologies: ['React', 'Node.js', 'Tailwind CSS'],
-      features: ['Responsive design', 'Email contact form']
-    },
-    {
-      id: 2,
-      title: 'Injibara University Tech Club Platform',
-      description: 'Built a full-stack web application using React.js, Node.js, and MySQL...',
-      image: Inuproject,
-      tags: ['React', 'Express', 'Mail API', 'MySQL'],
-      category: 'fullstack',
-      liveUrl: 'https://inu-tech-club.vercel.app',
-      githubUrl: 'https://github.com/ame12-max/tech-club',
-      fullDescription: '...',
-      technologies: ['React', 'Node.js', 'MySQL', 'Tailwind'],
-      features: ['JWT auth', 'Dual registration']
-    },
-    {
-      id: 3,
-      title: 'Hotel Finding and Booking System',
-      description: 'Integrated hotel management and booking system with ACID transactions...',
-      image: Hotel,
-      tags: ['React', 'Node.js', 'MySQL'],
-      category: 'fullstack',
-      liveUrl: 'https://hotel-booking-gilt-three.vercel.app',
-      githubUrl: 'https://github.com/ame12-max/Hotel-booking',
-      fullDescription: '...',
-      technologies: ['React', 'Node.js', 'MySQL'],
-      features: ['Search by city/name', 'Booking system']
-    }
-  ];
+  // Fetch projects from backend
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/api/projects`);
+        // Parse tags/technologies/features from comma strings to arrays
+        const parsedProjects = res.data.map(project => ({
+          ...project,
+          tags: project.tags ? (Array.isArray(project.tags) ? project.tags : project.tags.split(',').map(s => s.trim())) : [],
+          technologies: project.technologies ? (Array.isArray(project.technologies) ? project.technologies : project.technologies.split(',').map(s => s.trim())) : [],
+          features: project.features ? (Array.isArray(project.features) ? project.features : project.features.split(',').map(s => s.trim())) : [],
+          // Use first image from images array as main image
+          mainImage: project.images && project.images.length > 0 ? `${API_BASE}${project.images[0].image_url}` : null,
+          // Keep full images array for detail page
+          images: project.images || []
+        }));
+        setProjects(parsedProjects);
+      } catch (err) {
+        console.error('Failed to fetch projects:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, []);
 
   const filters = [
     { key: 'all', label: 'All Projects' },
@@ -91,6 +77,16 @@ const Projects = () => {
   useEffect(() => {
     setCurrentIndex(0);
   }, [activeFilter]);
+
+  if (loading) {
+    return (
+      <section id="projects" className="py-20 bg-white/80 dark:bg-dark-300/80 backdrop-blur-sm">
+        <div className="container mx-auto px-6 text-center">
+          <div className="text-gray-600 dark:text-gray-400">Loading projects...</div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="projects" ref={ref} className="py-20 bg-white/80 dark:bg-dark-300/80 backdrop-blur-sm">
@@ -160,17 +156,22 @@ const Projects = () => {
                         .slice(pageIdx * cardsPerView, (pageIdx + 1) * cardsPerView)
                         .map((project) => (
                           <div key={project.id} className="w-full md:w-1/2 lg:w-1/3 flex-shrink-0">
-                            {/* Entire card is a clickable Link */}
                             <Link
                               to={`/project/${project.id}`}
                               className="glass rounded-2xl overflow-hidden group h-full block transition-transform duration-300 hover:scale-[1.02]"
                             >
                               <div className="relative overflow-hidden h-48">
-                                <img
-                                  src={project.image}
-                                  alt={project.title}
-                                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                />
+                                {project.mainImage ? (
+                                  <img
+                                    src={project.mainImage}
+                                    alt={project.title}
+                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center text-gray-500">
+                                    No image
+                                  </div>
+                                )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-dark-300/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                               </div>
                               <div className="p-6">
@@ -181,7 +182,7 @@ const Projects = () => {
                                   {project.description}
                                 </p>
                                 <div className="flex flex-wrap gap-2 mb-4">
-                                  {project.tags.map(tag => (
+                                  {project.tags && project.tags.slice(0, 4).map(tag => (
                                     <span key={tag} className="px-3 py-1 bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-full text-sm">
                                       {tag}
                                     </span>
@@ -190,7 +191,7 @@ const Projects = () => {
                                 <div className="flex justify-between items-center">
                                   <div className="flex gap-4">
                                     <a
-                                      href={project.liveUrl}
+                                      href={project.live_url}
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       onClick={(e) => e.stopPropagation()}
@@ -200,7 +201,7 @@ const Projects = () => {
                                       <FiExternalLink />
                                     </a>
                                     <a
-                                      href={project.githubUrl}
+                                      href={project.github_url}
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       onClick={(e) => e.stopPropagation()}

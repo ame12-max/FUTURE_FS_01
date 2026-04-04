@@ -2,97 +2,105 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiGithub, FiExternalLink, FiArrowLeft, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import axios from 'axios';
 import Background3D from '../components/Background3D';
 
-import VideoEditor from '../assets/Video-editor.png';
-import Inuproject from '../assets/inu.png';
-import Hotel from '../assets/hotel-booking.png';
-import HotelAdmin from '../assets/hotel-booking-2.png';
-import HotelPayment from '../assets/hotel-booking-3.png';
-
-const projectsData = [
-  {
-    id: 1,
-    title: 'Video Editor Portfolio',
-    fullDescription: 'A responsive portfolio website for a video editor showcasing projects and skills. Built with React, Express, Resend Mail API, and Tailwind CSS.',
-    technologies: ['React', 'Node.js', 'Tailwind CSS'],
-    features: ['Responsive design', 'Email contact form'],
-    images: [
-      { src: VideoEditor, title: 'Homepage' },
-      { src: HotelAdmin, title: 'Project Showcase' },
-      { src: HotelPayment, title: 'Contact Section' }
-    ],
-    liveUrl: 'https://epicedits-siol.vercel.app/',
-    githubUrl: 'https://github.com/epicedits-siol/portfolio'
-  },
-  {
-    id: 2,
-    title: 'Injibara University Tech Club Platform',
-    fullDescription: 'Built a full-stack web application using React.js, Node.js, and MySQL to manage club activities, events, and member registrations for Injibara University Tech Club.',
-    technologies: ['React', 'Node.js', 'MySQL', 'Tailwind'],
-    features: ['JWT auth', 'Dual registration'],
-    images: [
-      { src: Inuproject, title: 'Dashboard' },
-      { src: HotelAdmin, title: 'Registration Form' },
-      { src: HotelPayment, title: 'Events Page' }
-    ],
-    liveUrl: 'https://inu-tech-club.vercel.app',
-    githubUrl: 'https://github.com/inu-tech-club'
-  },
-  {
-    id: 3,
-    title: 'Hotel Finding and Booking System',
-    fullDescription: 'Integrated hotel management and booking system with ACID transactions, allowing users to search for hotels by city or name and book rooms securely.',
-    technologies: ['React', 'Node.js', 'MySQL'],
-    features: ['Search by city/name', 'Booking system'],
-    images: [
-      { src: Hotel, title: 'Search Results' },
-      { src: HotelAdmin, title: 'Booking Form' },
-      { src: HotelPayment, title: 'Payment Gateway' }
-    ],
-    liveUrl: 'https://hotel-booking-gilt-three.vercel.app',
-    githubUrl: 'https://github.com/hotel-booking-system'
-  }
-];
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [projectIndex, setProjectIndex] = useState(() => {
-    const index = projectsData.findIndex(p => p.id === parseInt(id));
-    return index !== -1 ? index : 0;
-  });
+  const [allProjects, setAllProjects] = useState([]);
+  const [currentProject, setCurrentProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [imageIndex, setImageIndex] = useState(0);
-  const currentProject = projectsData[projectIndex];
-  const currentImages = currentProject?.images || [];
+  const [projectIndex, setProjectIndex] = useState(0);
 
-  // Reset image index when project changes
+  // Fetch all projects on mount
   useEffect(() => {
-    setImageIndex(0);
-  }, [projectIndex]);
+    const fetchProjects = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/api/projects`);
+        const projects = res.data.map(p => ({
+          ...p,
+          technologies: p.technologies ? p.technologies.split(',').map(s => s.trim()) : [],
+          features: p.features ? p.features.split(',').map(s => s.trim()) : [],
+          tags: p.tags ? p.tags.split(',').map(s => s.trim()) : [],
+        }));
+        setAllProjects(projects);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load projects');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, []);
 
-  // Update URL when project changes
+  // Update current project when allProjects or id changes
   useEffect(() => {
-    navigate(`/project/${projectsData[projectIndex].id}`, { replace: true });
-  }, [projectIndex, navigate]);
+    if (allProjects.length === 0) return;
+    const index = allProjects.findIndex(p => p.id === parseInt(id));
+    if (index === -1) {
+      setError('Project not found');
+      setCurrentProject(null);
+    } else {
+      setProjectIndex(index);
+      setCurrentProject(allProjects[index]);
+      setImageIndex(0);
+    }
+  }, [allProjects, id]);
+
+  // Update URL when project index changes (via next/prev)
+  useEffect(() => {
+    if (allProjects.length && allProjects[projectIndex]) {
+      navigate(`/project/${allProjects[projectIndex].id}`, { replace: true });
+    }
+  }, [projectIndex, navigate, allProjects]);
 
   const nextProject = () => {
-    setProjectIndex((prev) => (prev + 1) % projectsData.length);
+    setProjectIndex((prev) => (prev + 1) % allProjects.length);
   };
   const prevProject = () => {
-    setProjectIndex((prev) => (prev - 1 + projectsData.length) % projectsData.length);
+    setProjectIndex((prev) => (prev - 1 + allProjects.length) % allProjects.length);
   };
 
   const nextImage = () => {
-    setImageIndex((prev) => (prev + 1) % currentImages.length);
+    if (currentProject?.images?.length) {
+      setImageIndex((prev) => (prev + 1) % currentProject.images.length);
+    }
   };
   const prevImage = () => {
-    setImageIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
+    if (currentProject?.images?.length) {
+      setImageIndex((prev) => (prev - 1 + currentProject.images.length) % currentProject.images.length);
+    }
   };
 
-  if (!projectsData.length || !currentProject) {
-    return <div className="text-center py-20">Project not found</div>;
+  if (loading) {
+    return (
+      <div className="relative min-h-screen flex items-center justify-center">
+        <Background3D />
+        <div className="relative z-10 text-white">Loading...</div>
+      </div>
+    );
   }
+
+  if (error || !currentProject) {
+    return (
+      <div className="relative min-h-screen flex items-center justify-center">
+        <Background3D />
+        <div className="relative z-10 text-center">
+          <p className="text-white text-xl">{error || 'Project not found'}</p>
+          <Link to="/#projects" className="mt-4 inline-block text-purple-400 hover:underline">Back to Projects</Link>
+        </div>
+      </div>
+    );
+  }
+
+  const images = currentProject.images || [];
+  const currentImage = images[imageIndex];
 
   return (
     <div className="relative min-h-screen pt-24 pb-12">
@@ -119,8 +127,8 @@ const ProjectDetail = () => {
                   <AnimatePresence mode="wait">
                     <motion.img
                       key={imageIndex}
-                      src={currentImages[imageIndex]?.src}
-                      alt={currentImages[imageIndex]?.title || currentProject.title}
+                      src={currentImage ? `${API_BASE}${currentImage.image_url}` : ''}
+                      alt={currentImage?.title || currentProject.title}
                       className="w-full h-auto object-cover"
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -129,8 +137,7 @@ const ProjectDetail = () => {
                     />
                   </AnimatePresence>
 
-                  {/* Image Navigation Arrows */}
-                  {currentImages.length > 1 && (
+                  {images.length > 1 && (
                     <>
                       <button
                         onClick={prevImage}
@@ -150,17 +157,15 @@ const ProjectDetail = () => {
                   )}
                 </div>
 
-                {/* Image Title / Caption */}
-                {currentImages.length > 0 && (
+                {images.length > 0 && currentImage && (
                   <div className="text-center mt-3 text-sm text-gray-500 dark:text-gray-400">
-                    {currentImages[imageIndex]?.title}
+                    {currentImage.title}
                   </div>
                 )}
 
-                {/* Image Dots */}
-                {currentImages.length > 1 && (
+                {images.length > 1 && (
                   <div className="flex justify-center gap-2 mt-4">
-                    {currentImages.map((_, idx) => (
+                    {images.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setImageIndex(idx)}
@@ -176,13 +181,13 @@ const ProjectDetail = () => {
                 )}
               </div>
 
-              {/* Project Details (unchanged) */}
+              {/* Project Details */}
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
                   {currentProject.title}
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                  {currentProject.fullDescription}
+                  {currentProject.full_description}
                 </p>
 
                 <div className="mb-4">
@@ -205,7 +210,7 @@ const ProjectDetail = () => {
 
                 <div className="flex flex-wrap gap-4">
                   <a
-                    href={currentProject.liveUrl}
+                    href={currentProject.live_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full hover:shadow-lg transition"
@@ -213,7 +218,7 @@ const ProjectDetail = () => {
                     <FiExternalLink /> Live Demo
                   </a>
                   <a
-                    href={currentProject.githubUrl}
+                    href={currentProject.github_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-2 glass text-gray-800 dark:text-white rounded-full hover:bg-white/50 transition"
@@ -225,7 +230,7 @@ const ProjectDetail = () => {
             </div>
 
             {/* Project Carousel Navigation (between projects) */}
-            {projectsData.length > 1 && (
+            {allProjects.length > 1 && (
               <div className="mt-10 flex flex-col items-center">
                 <div className="flex gap-4 mb-4">
                   <button
@@ -244,7 +249,7 @@ const ProjectDetail = () => {
                   </button>
                 </div>
                 <div className="flex gap-2">
-                  {projectsData.map((_, idx) => (
+                  {allProjects.map((_, idx) => (
                     <button
                       key={idx}
                       onClick={() => setProjectIndex(idx)}

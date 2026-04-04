@@ -63,10 +63,10 @@ const Contact = () => {
   ];
 
   const socialLinks = [
-    { name: 'GitHub', url: '#', icon: '💻' },
-    { name: 'LinkedIn', url: '#', icon: '💼' },
-    { name: 'Twitter', url: '#', icon: '🐦' },
-    { name: 'Dribbble', url: '#', icon: '🎨' }
+    { name: 'GitHub', url: 'https://github.com/ame12-max/', icon: '💻' },
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/amare-agerneh-7a6178372/', icon: '💼' },
+    { name: 'Twitter', url: 'https://twitter.com/ame12_max', icon: '🐦' },
+    { name: 'YouTube', url: 'https://www.youtube.com/@TechSpire2112', icon: '📺' }
   ];
 
   return (
