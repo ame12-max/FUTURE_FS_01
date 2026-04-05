@@ -2,8 +2,11 @@
 
 A modern, responsive, and feature-rich portfolio website built with React, Node.js, Express, and MySQL. It includes a dynamic project showcase, an admin dashboard to manage projects, a contact form with email notifications, and a 3D particle background.
 
-![Portfolio Demo](./homepage.png)  
-*Replace with your actual screenshot filename (e.g., `homepage.png`)*
+## 📸 Screenshots
+
+| Homepage | Projects Section | Admin Dashboard |
+|----------|----------------|------------------|
+| ![Home](./screenshots/homepage.png) | ![Projects](./screenshots/projects.png) | ![Admin](./screenshots/admin-dashboard.png) |
 
 ## ✨ Features
 
