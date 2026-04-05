@@ -166,6 +166,7 @@ npm run dev
 Open http://localhost:5173 to view the portfolio.
 
 🔐 Admin Dashboard
+
 Access at: http://localhost:5173/admin/login
 
 Default credentials:
@@ -173,15 +174,12 @@ Username: admin
 Password: admin123
 
 Once logged in, you can:
-
-Add new projects (title, description, technologies, features, tags, and multiple images)
-
-Edit or delete existing projects
-
-All changes are immediately reflected on the live site
+- Add new projects (title, description, technologies, features, tags, and multiple images)
+- Edit or delete existing projects
+- All changes are immediately reflected on the live site
 
 📁 Folder Structure
-text
+
 FUTURE_FS_01/
 ├── Server/                 # Backend
 │   ├── config/             # Database connection
@@ -204,32 +202,30 @@ FUTURE_FS_01/
 │   ├── .env
 │   └── package.json
 └── README.md
+
 🚀 Deployment
+
 Backend (Render, Railway, or similar)
-Set environment variables on your hosting platform.
-
-Use a MySQL cloud database (e.g., ClearDB, Aiven, PlanetScale).
-
-Update VITE_API_BASE_URL to point to your live backend URL.
+- Set environment variables on your hosting platform.
+- Use a MySQL cloud database (e.g., ClearDB, Aiven, PlanetScale).
+- Update VITE_API_BASE_URL to point to your live backend URL.
 
 Frontend (Vercel, Netlify)
-Build the project: npm run build
-
-Deploy the dist folder (or build folder).
-
-Ensure VITE_API_BASE_URL is set to your live backend URL.
+- Build the project: npm run build
+- Deploy the dist folder (or build folder).
+- Ensure VITE_API_BASE_URL is set to your live backend URL.
 
 📄 License
+
 This project is for educational purposes as part of the Future Interns Full Stack Web Development internship.
 
 👨‍💻 Author
-Amare – GitHub | LinkedIn
+
+Amare – [GitHub](https://github.com/ame12-max) | [LinkedIn](https://linkedin.com/in/ame12)
 
 🙏 Acknowledgements
-Future Interns for the internship opportunity
 
-React, Tailwind CSS, Framer Motion
-
-tsParticles for the 3D background
-
-Nodemailer for email notifications
+- Future Interns for the internship opportunity
+- React, Tailwind CSS, Framer Motion
+- tsParticles for the 3D background
+- Nodemailer for email notifications
