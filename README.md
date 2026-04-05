@@ -2,7 +2,8 @@
 
 A modern, responsive, and feature-rich portfolio website built with React, Node.js, Express, and MySQL. It includes a dynamic project showcase, an admin dashboard to manage projects, a contact form with email notifications, and a 3D particle background.
 
-![Portfolio Screenshot](https://via.placeholder.com/1200x600?text=Portfolio+Screenshot)
+![Portfolio Demo](./homepage.png)  
+*Replace with your actual screenshot filename (e.g., `homepage.png`)*
 
 ## ✨ Features
 
@@ -205,7 +206,9 @@ Ensure VITE_API_BASE_URL is set to your live backend URL.
 
 📸 Screenshots
 Homepage	Projects Section	Admin Dashboard
-https://via.placeholder.com/400x200?text=Home	https://via.placeholder.com/400x200?text=Projects	https://via.placeholder.com/400x200?text=Admin
+https://./homepage.png	https://./projects.png	https://./admin-dashboard.png
+Make sure the screenshot files exist in the project root with the names above, or adjust the paths accordingly.
+
 📄 License
 This project is for educational purposes as part of the Future Interns Full Stack Web Development internship.
 
