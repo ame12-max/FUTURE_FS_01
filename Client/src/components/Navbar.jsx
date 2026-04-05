@@ -20,11 +20,11 @@ const Navbar = () => {
   const navItems = [
     "Home",
     "About",
+    'Education',
     "Skills",
     "Projects",
     "Experience",
     "Contact",
-    "Socials",
   ];
 
   // Function to render the appropriate link based on current page
