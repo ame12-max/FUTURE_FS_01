@@ -56,11 +56,11 @@ A modern, responsive, and feature-rich portfolio website built with React, Node.
 
 ### 1. Clone the repository
 
-```bash
+
 git clone https://github.com/ame12-max/FUTURE_FS_01.git
 cd FUTURE_FS_01
 2. Backend Setup
-bash
+
 cd Server
 npm install
 Create a .env file in the Server folder:
@@ -136,7 +136,7 @@ console.log(bcrypt.hashSync('admin123', 10));
 4. Frontend Setup
 From the project root:
 
-bash
+
 npm install
 Create a .env file in the root folder:
 
@@ -145,12 +145,12 @@ VITE_API_BASE_URL=http://localhost:3000
 5. Run the Application
 Start the backend (from Server folder):
 
-bash
+
 node server.js
 # or with nodemon: npm run dev
 Start the frontend (from project root):
 
-bash
+
 npm run dev
 Open http://localhost:5173 to view the portfolio.
 
@@ -180,18 +180,19 @@ FUTURE_FS_01/
 │   ├── uploads/            # Uploaded project images
 │   ├── .env
 │   └── server.js
-├── src/                    # Frontend
-│   ├── assets/             # Images, resume PDF
-│   ├── components/         # Reusable UI components
-│   ├── context/            # Theme context
-│   ├── hooks/              # Custom hooks (typewriter)
-│   ├── pages/              # Home, Socials, ProjectDetail, Admin
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-├── .env
-├── package.json
-└── README.md
+├── Client/                    # Frontend
+│    ├── src 
+│    │    ├── assets/      # Images, resume PDF
+│    │    ├── components/         # Reusable UI components
+│    │    ├── context/            # Theme context
+│    │    ├── hooks/              # Custom hooks (typewriter)
+│    │    ├── pages/              # Home, Socials, ProjectDetail, Admin
+│    │    ├── App.jsx
+│    │    ├── main.jsx
+│    │    └── index.css
+├─   │── .env
+├─   │── package.json
+└    │── README.md
 🚀 Deployment
 Backend (e.g., Render, Railway, or Vercel + serverless)
 Set environment variables in your hosting platform.
