@@ -12,7 +12,6 @@ A modern, responsive, and feature-rich portfolio website built with **React**, *
 |----------|----------------|------------------|
 | ![Home](./screenshots/homepage.png) | ![Projects](./screenshots/projects.png) | ![Admin](./screenshots/admin-dashboard.png) |
 
-
 ---
 
 ## ✨ Features
@@ -69,15 +68,14 @@ A modern, responsive, and feature-rich portfolio website built with **React**, *
 
 ### 1. Clone the repository
 
-
+```bash
 git clone https://github.com/ame12-max/FUTURE_FS_01.git
 cd FUTURE_FS_01
-
 2. Backend Setup
-
+bash
 cd Server
 npm install
-Create a .env file in the Server folder:
+Create a .env file in the Server folder with the following content:
 
 env
 PORT=3000
@@ -144,13 +142,12 @@ CREATE TABLE admins (
 INSERT INTO admins (username, password) VALUES ('admin', '$2b$10$YourHashedPassword');
 To generate the hashed password, run this Node.js command once:
 
-js
-const bcrypt = require('bcryptjs');
-console.log(bcrypt.hashSync('admin123', 10));
+bash
+node -e "const bcrypt = require('bcryptjs'); console.log(bcrypt.hashSync('admin123', 10));"
 4. Frontend Setup
 From the project root:
 
-
+bash
 npm install
 Create a .env file in the root folder:
 
@@ -159,12 +156,12 @@ VITE_API_BASE_URL=http://localhost:3000
 5. Run the Application
 Start the backend (from Server folder):
 
-
+bash
 node server.js
 # or with nodemon: npm run dev
 Start the frontend (from project root):
 
-
+bash
 npm run dev
 Open http://localhost:5173 to view the portfolio.
 
