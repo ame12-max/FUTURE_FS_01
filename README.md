@@ -1,12 +1,21 @@
 # 🚀 Full-Stack Developer Portfolio
 
-A modern, responsive, and feature-rich portfolio website built with React, Node.js, Express, and MySQL. It includes a dynamic project showcase, an admin dashboard to manage projects, a contact form with email notifications, and a 3D particle background.
+A modern, responsive, and feature-rich portfolio website built with **React**, **Node.js**, **Express**, and **MySQL**. It includes a dynamic project showcase, an admin dashboard to manage projects, a contact form with email notifications, and a 3D particle background.
+
+![Portfolio Demo](./screenshots/homepage.png)  
+*Replace with your actual screenshot (e.g., `homepage.png` inside `screenshots/` folder)*
+
+---
 
 ## 📸 Screenshots
 
 | Homepage | Projects Section | Admin Dashboard |
 |----------|----------------|------------------|
 | ![Home](./screenshots/homepage.png) | ![Projects](./screenshots/projects.png) | ![Admin](./screenshots/admin-dashboard.png) |
+
+*Make sure the images exist in the `screenshots/` folder at the root of your repository.*
+
+---
 
 ## ✨ Features
 
@@ -21,6 +30,8 @@ A modern, responsive, and feature-rich portfolio website built with React, Node.
 - **Resume download** button
 - **Socials page** – all your links in one place
 - **SEO-friendly** structure
+
+---
 
 ## 🛠️ Tech Stack
 
@@ -45,12 +56,16 @@ A modern, responsive, and feature-rich portfolio website built with React, Node.
 - Multer (file uploads)
 - Dotenv
 
+---
+
 ## 📋 Prerequisites
 
 - Node.js (v18 or later)
 - MySQL (v8 or later)
 - npm or yarn
 - Git
+
+---
 
 ## 🔧 Installation & Setup
 
@@ -59,6 +74,7 @@ A modern, responsive, and feature-rich portfolio website built with React, Node.
 
 git clone https://github.com/ame12-max/FUTURE_FS_01.git
 cd FUTURE_FS_01
+
 2. Backend Setup
 
 cd Server
@@ -77,7 +93,7 @@ EMAIL_PASS=your_app_password
 Important: For Gmail, use an App Password – not your regular password.
 
 3. Database Setup
-Run MySQL and create the database and tables:
+Run MySQL and execute the following SQL:
 
 sql
 CREATE DATABASE portfolio_db;
@@ -163,7 +179,7 @@ Password: admin123
 
 Once logged in, you can:
 
-Add new projects with title, description, technologies, features, tags, and multiple images
+Add new projects (title, description, technologies, features, tags, and multiple images)
 
 Edit or delete existing projects
 
@@ -180,38 +196,33 @@ FUTURE_FS_01/
 │   ├── uploads/            # Uploaded project images
 │   ├── .env
 │   └── server.js
-├── Client/                    # Frontend
-│    ├── src 
-│    │    ├── assets/      # Images, resume PDF
-│    │    ├── components/         # Reusable UI components
-│    │    ├── context/            # Theme context
-│    │    ├── hooks/              # Custom hooks (typewriter)
-│    │    ├── pages/              # Home, Socials, ProjectDetail, Admin
-│    │    ├── App.jsx
-│    │    ├── main.jsx
-│    │    └── index.css
-├─   │── .env
-├─   │── package.json
-└    │── README.md
+├── Client/                 # Frontend (or src/ depending on your setup)
+│   ├── src/
+│   │   ├── assets/         # Images, resume PDF
+│   │   ├── components/     # Reusable UI components
+│   │   ├── context/        # Theme context
+│   │   ├── hooks/          # Custom hooks (typewriter)
+│   │   ├── pages/          # Home, Socials, ProjectDetail, Admin
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── .env
+│   └── package.json
+└── README.md
 🚀 Deployment
-Backend (e.g., Render, Railway, or Vercel + serverless)
-Set environment variables in your hosting platform.
+Backend (Render, Railway, or similar)
+Set environment variables on your hosting platform.
 
-Use a MySQL cloud database (e.g., ClearDB, Aiven, or PlanetScale).
+Use a MySQL cloud database (e.g., ClearDB, Aiven, PlanetScale).
 
 Update VITE_API_BASE_URL to point to your live backend URL.
 
 Frontend (Vercel, Netlify)
 Build the project: npm run build
 
-Deploy the dist folder.
+Deploy the dist folder (or build folder).
 
 Ensure VITE_API_BASE_URL is set to your live backend URL.
-
-📸 Screenshots
-Homepage	Projects Section	Admin Dashboard
-https://./homepage.png	https://./projects.png	https://./admin-dashboard.png
-Make sure the screenshot files exist in the project root with the names above, or adjust the paths accordingly.
 
 📄 License
 This project is for educational purposes as part of the Future Interns Full Stack Web Development internship.
