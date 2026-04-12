@@ -3,7 +3,6 @@
 A modern, responsive, and feature-rich portfolio website built with **React**, **Node.js**, **Express**, and **MySQL**. It includes a dynamic project showcase, an admin dashboard to manage projects, a contact form with email notifications, and a 3D particle background.
 
 ![Portfolio Demo](./screenshots/homepage.png)  
-*Replace with your actual screenshot (e.g., `homepage.png` inside `screenshots/` folder)*
 
 ---
 
@@ -12,8 +11,6 @@ A modern, responsive, and feature-rich portfolio website built with **React**, *
 | Homepage | Projects Section | Admin Dashboard |
 |----------|----------------|------------------|
 | ![Home](./screenshots/homepage.png) | ![Projects](./screenshots/projects.png) | ![Admin](./screenshots/admin-dashboard.png) |
-
-*Make sure the images exist in the `screenshots/` folder at the root of your repository.*
 
 ---
 
@@ -71,15 +68,14 @@ A modern, responsive, and feature-rich portfolio website built with **React**, *
 
 ### 1. Clone the repository
 
-
+```bash
 git clone https://github.com/ame12-max/FUTURE_FS_01.git
 cd FUTURE_FS_01
-
 2. Backend Setup
-
+bash
 cd Server
 npm install
-Create a .env file in the Server folder:
+Create a .env file in the Server folder with the following content:
 
 env
 PORT=3000
@@ -146,13 +142,12 @@ CREATE TABLE admins (
 INSERT INTO admins (username, password) VALUES ('admin', '$2b$10$YourHashedPassword');
 To generate the hashed password, run this Node.js command once:
 
-js
-const bcrypt = require('bcryptjs');
-console.log(bcrypt.hashSync('admin123', 10));
+bash
+node -e "const bcrypt = require('bcryptjs'); console.log(bcrypt.hashSync('admin123', 10));"
 4. Frontend Setup
 From the project root:
 
-
+bash
 npm install
 Create a .env file in the root folder:
 
@@ -161,16 +156,17 @@ VITE_API_BASE_URL=http://localhost:3000
 5. Run the Application
 Start the backend (from Server folder):
 
-
+bash
 node server.js
 # or with nodemon: npm run dev
 Start the frontend (from project root):
 
-
+bash
 npm run dev
 Open http://localhost:5173 to view the portfolio.
 
 🔐 Admin Dashboard
+
 Access at: http://localhost:5173/admin/login
 
 Default credentials:
@@ -178,15 +174,12 @@ Username: admin
 Password: admin123
 
 Once logged in, you can:
-
-Add new projects (title, description, technologies, features, tags, and multiple images)
-
-Edit or delete existing projects
-
-All changes are immediately reflected on the live site
+- Add new projects (title, description, technologies, features, tags, and multiple images)
+- Edit or delete existing projects
+- All changes are immediately reflected on the live site
 
 📁 Folder Structure
-text
+
 FUTURE_FS_01/
 ├── Server/                 # Backend
 │   ├── config/             # Database connection
@@ -209,32 +202,30 @@ FUTURE_FS_01/
 │   ├── .env
 │   └── package.json
 └── README.md
+
 🚀 Deployment
+
 Backend (Render, Railway, or similar)
-Set environment variables on your hosting platform.
-
-Use a MySQL cloud database (e.g., ClearDB, Aiven, PlanetScale).
-
-Update VITE_API_BASE_URL to point to your live backend URL.
+- Set environment variables on your hosting platform.
+- Use a MySQL cloud database (e.g., ClearDB, Aiven, PlanetScale).
+- Update VITE_API_BASE_URL to point to your live backend URL.
 
 Frontend (Vercel, Netlify)
-Build the project: npm run build
-
-Deploy the dist folder (or build folder).
-
-Ensure VITE_API_BASE_URL is set to your live backend URL.
+- Build the project: npm run build
+- Deploy the dist folder (or build folder).
+- Ensure VITE_API_BASE_URL is set to your live backend URL.
 
 📄 License
+
 This project is for educational purposes as part of the Future Interns Full Stack Web Development internship.
 
 👨‍💻 Author
-Amare – GitHub | LinkedIn
+
+Amare – [GitHub](https://github.com/ame12-max) | [LinkedIn](https://linkedin.com/in/ame12)
 
 🙏 Acknowledgements
-Future Interns for the internship opportunity
 
-React, Tailwind CSS, Framer Motion
-
-tsParticles for the 3D background
-
-Nodemailer for email notifications
+- Future Interns for the internship opportunity
+- React, Tailwind CSS, Framer Motion
+- tsParticles for the 3D background
+- Nodemailer for email notifications
