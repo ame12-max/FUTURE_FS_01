@@ -9,7 +9,11 @@ const contactRoutes = require('./routes/contactRoutes');
 dotenv.config();
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: 'https://amareagerneh.vercel.app'
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
