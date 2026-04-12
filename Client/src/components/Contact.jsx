@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer'; // use this instead of framer's useInView for simplicity
-import axios from 'axios';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer"; // use this instead of framer's useInView for simplicity
+import axios from "axios";
 
 const Contact = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.3 });
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -17,7 +18,7 @@ const Contact = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -27,14 +28,17 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+      const apiBaseUrl =
+        import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
       const response = await axios.post(`${apiBaseUrl}/api/contact`, formData);
-      setSubmitStatus({ type: 'success', message: response.data.message });
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      setSubmitStatus({ type: "success", message: response.data.message });
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (error) {
-      setSubmitStatus({ 
-        type: 'error', 
-        message: error.response?.data?.message || 'Failed to send message. Please try again.' 
+      setSubmitStatus({
+        type: "error",
+        message:
+          error.response?.data?.message ||
+          "Failed to send message. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -43,34 +47,46 @@ const Contact = () => {
 
   const contactMethods = [
     {
-      icon: '📧',
-      title: 'Email',
-      value: 'amex44755@gmail.com',
-      link: 'mailto:amex44755@gmail.com'
+      icon: "📧",
+      title: "Email",
+      value: "amex44755@gmail.com",
+      link: "mailto:amex44755@gmail.com",
     },
     {
-      icon: '📱',
-      title: 'Phone',
-      value: '+251 985 139 776',
-      link: 'tel:+251985139776'
+      icon: "📱",
+      title: "Phone",
+      value: "+251 985 139 776",
+      link: "tel:+251985139776",
     },
     {
-      icon: '📍',
-      title: 'Location',
-      value: 'Injibara, ETHIOPIA',
-      link: '#'
-    }
+      icon: "📍",
+      title: "Location",
+      value: "Injibara, ETHIOPIA",
+      link: "#",
+    },
   ];
 
   const socialLinks = [
-    { name: 'GitHub', url: 'https://github.com/ame12-max/', icon: '💻' },
-    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/amare-agerneh-7a6178372/', icon: '💼' },
-    { name: 'Twitter', url: 'https://twitter.com/ame12_max', icon: '🐦' },
-    { name: 'YouTube', url: 'https://www.youtube.com/@TechSpire2112', icon: '📺' }
+    { name: "GitHub", url: "https://github.com/ame12-max/", icon: "💻" },
+    {
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/in/amare-agerneh-7a6178372/",
+      icon: "💼",
+    },
+    { name: "Twitter", url: "https://twitter.com/ame12_max", icon: "🐦" },
+    {
+      name: "YouTube",
+      url: "https://www.youtube.com/@TechSpire2112",
+      icon: "📺",
+    },
   ];
 
   return (
-    <section id="contact" ref={ref} className="py-20 bg-white/80 dark:bg-dark-300/80 backdrop-blur-sm">
+    <section
+      id="contact"
+      ref={ref}
+      className="py-20 bg-white/80 dark:bg-dark-300/80 backdrop-blur-sm"
+    >
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -84,8 +100,8 @@ const Contact = () => {
               Get In <span className="gradient-text">Touch</span>
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Have a project in mind or want to collaborate? I'd love to hear from you. 
-              Let's create something amazing together.
+              Have a project in mind or want to collaborate? I'd love to hear
+              from you. Let's create something amazing together.
             </p>
           </div>
 
@@ -99,11 +115,11 @@ const Contact = () => {
               <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
                 Let's Talk
               </h3>
-              
+
               <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-                I'm always open to discussing new opportunities, creative ideas, 
-                or opportunities to be part of your vision. Feel free to reach out 
-                through any of the channels below.
+                I'm always open to discussing new opportunities, creative ideas,
+                or opportunities to be part of your vision. Feel free to reach
+                out through any of the channels below.
               </p>
 
               {/* Contact Methods */}
@@ -113,7 +129,9 @@ const Contact = () => {
                     key={method.title}
                     href={method.link}
                     initial={{ opacity: 0, x: -20 }}
-                    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                    animate={
+                      inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
+                    }
                     transition={{ delay: 0.3 + index * 0.1 }}
                     className="flex items-center p-4 rounded-xl glass hover:bg-white/80 dark:hover:bg-dark-200/80 transition-colors duration-300 group"
                   >
@@ -143,7 +161,11 @@ const Contact = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       initial={{ opacity: 0, scale: 0 }}
-                      animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+                      animate={
+                        inView
+                          ? { opacity: 1, scale: 1 }
+                          : { opacity: 0, scale: 0 }
+                      }
                       transition={{ delay: 0.6 + index * 0.1 }}
                       className="w-12 h-12 flex items-center justify-center glass rounded-xl hover:bg-primary-500 hover:text-white transition-all duration-300 text-lg"
                       aria-label={social.name}
@@ -164,7 +186,10 @@ const Contact = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Your Name *
                     </label>
                     <input
@@ -179,7 +204,10 @@ const Contact = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Email Address *
                     </label>
                     <input
@@ -193,9 +221,29 @@ const Contact = () => {
                       placeholder="john@example.com"
                     />
                   </div>
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white/70 dark:bg-dark-200/70 backdrop-blur-sm text-gray-900 dark:text-white"
+                      placeholder="+251 912 345 678"
+                    />
+                  </div>
                 </div>
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Subject *
                   </label>
                   <input
@@ -209,8 +257,12 @@ const Contact = () => {
                     placeholder="Project Collaboration"
                   />
                 </div>
+
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Message *
                   </label>
                   <textarea
@@ -231,23 +283,40 @@ const Contact = () => {
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Sending...
                     </span>
                   ) : (
-                    'Send Message'
+                    "Send Message"
                   )}
                 </button>
-
                 {submitStatus && (
-                  <div className={`p-4 rounded-lg ${
-                    submitStatus.type === 'success' 
-                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
-                      : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
-                  }`}>
+                  <div
+                    className={`p-4 rounded-lg ${
+                      submitStatus.type === "success"
+                        ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                        : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                    }`}
+                  >
                     {submitStatus.message}
                   </div>
                 )}
