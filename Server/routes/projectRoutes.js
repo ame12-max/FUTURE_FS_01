@@ -1,20 +1,20 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
 const { getAllProjects, getProjectById, createProject, updateProject, deleteProject } = require('../controllers/projectController');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// Configure multer storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads/');
+// Configure Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'portfolio_projects',      // folder name in Cloudinary
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+    transformation: [{ width: 800, height: 600, crop: 'limit' }],
   },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
 });
 
-// Initialize multer with storage (for multiple files)
 const upload = multer({ storage });
 
 const router = express.Router();
@@ -22,8 +22,8 @@ const router = express.Router();
 // Routes
 router.get('/', getAllProjects);
 router.get('/:id', getProjectById);
-router.post('/', authMiddleware, upload.array('images', 10), createProject);   // <-- multiple images
-router.put('/:id', authMiddleware, upload.array('images', 10), updateProject); // <-- multiple images
+router.post('/', authMiddleware, upload.array('images', 10), createProject);
+router.put('/:id', authMiddleware, upload.array('images', 10), updateProject);
 router.delete('/:id', authMiddleware, deleteProject);
 
 module.exports = router;
