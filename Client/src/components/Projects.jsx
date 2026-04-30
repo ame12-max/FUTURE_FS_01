@@ -7,6 +7,14 @@ import axios from 'axios';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
+// Helper: return absolute image URL (Cloudinary URLs are already absolute)
+const getImageUrl = (url) => {
+  if (!url) return null;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  // For local uploads (stored as '/uploads/...')
+  return `${API_BASE}${url}`;
+};
+
 const Projects = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
   const [activeFilter, setActiveFilter] = useState('all');
@@ -16,22 +24,18 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const carouselRef = useRef(null);
 
-  // Fetch projects from backend
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const res = await axios.get(`${API_BASE}/api/projects`);
-        // Parse tags/technologies/features from comma strings to arrays
         const parsedProjects = res.data.map(project => ({
           ...project,
           tags: project.tags ? (Array.isArray(project.tags) ? project.tags : project.tags.split(',').map(s => s.trim())) : [],
           technologies: project.technologies ? (Array.isArray(project.technologies) ? project.technologies : project.technologies.split(',').map(s => s.trim())) : [],
           features: project.features ? (Array.isArray(project.features) ? project.features : project.features.split(',').map(s => s.trim())) : [],
-          // Use first image from images array as main image (Cloudinary URLs are absolute; local ones need API_BASE)
+          // Main image: first image in the array (if any)
           mainImage: project.images && project.images.length > 0
-            ? (project.images[0].image_url.startsWith('http') 
-                ? project.images[0].image_url 
-                : `${API_BASE}${project.images[0].image_url}`)
+            ? getImageUrl(project.images[0].image_url)
             : null,
           images: project.images || []
         }));
@@ -96,7 +100,7 @@ const Projects = () => {
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
           <div className="text-center mb-12">
