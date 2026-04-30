@@ -11,7 +11,7 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/api/admin/login', { username, password });
+      const res = await axios.post('https://future-fs-01-8c7x.onrender.com/api/admin/login', { username, password });
       
       if (res.status === 401) {
         alert("Invalid Username Or pasword")
