@@ -102,7 +102,7 @@ const Admin = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this project permanently?')) return;
     try {
-      await axios.delete(`http://localhost:3000/api/projects/${id}`, {
+      await axios.delete(`https://future-fs-01-8c7x.onrender.com/api/projects/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchProjects();
@@ -156,12 +156,12 @@ const Admin = () => {
 
     try {
       if (form.id) {
-        await axios.put(`http://localhost:3000/api/projects/${form.id}`, formData, {
+        await axios.put(https://future-fs-01-8c7x.onrender.com/api/projects/${form.id}`, formData, {
           headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
         });
         setMessage({ type: 'success', text: 'Project updated!' });
       } else {
-        await axios.post('http://localhost:3000/api/projects', formData, {
+        await axios.post('https://future-fs-01-8c7x.onrender.com/api/projects', formData, {
           headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
         });
         setMessage({ type: 'success', text: 'Project added!' });
