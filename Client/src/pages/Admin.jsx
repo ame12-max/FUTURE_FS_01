@@ -47,7 +47,7 @@ const Admin = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/projects');
+      const res = await axios.get('https://future-fs-01-8c7x.onrender.com/api/projects');
       const parsedProjects = res.data.map(project => ({
         ...project,
         tags: parseStringToArray(project.tags),
