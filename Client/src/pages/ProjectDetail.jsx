@@ -5,7 +5,7 @@ import { FiGithub, FiExternalLink, FiArrowLeft, FiChevronLeft, FiChevronRight } 
 import axios from 'axios';
 import Background3D from '../components/Background3D';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://future-fs-01-8c7x.onrender.com';
 
 const ProjectDetail = () => {
   const { id } = useParams();
