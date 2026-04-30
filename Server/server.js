@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin: 'https://amareagerneh.vercel.app'
+  origin: 'https://amare-dev.vercel.app'
 };
 
 app.use(cors(corsOptions));
