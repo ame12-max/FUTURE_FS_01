@@ -156,7 +156,7 @@ const Admin = () => {
 
     try {
       if (form.id) {
-        await axios.put(https://future-fs-01-8c7x.onrender.com/api/projects/${form.id}`, formData, {
+        await axios.put(`https://future-fs-01-8c7x.onrender.com/api/projects/${form.id}`, formData, {
           headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
         });
         setMessage({ type: 'success', text: 'Project updated!' });
