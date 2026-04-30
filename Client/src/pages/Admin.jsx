@@ -257,14 +257,14 @@ const Admin = () => {
                 </div>
               </div>
 
-              {/* Existing Images (from DB) */}
+              {/* Existing Images (from DB) – Cloudinary URLs (no API_BASE prefix) */}
               {existingImages.length > 0 && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Current Images</label>
                   <div className="flex flex-wrap gap-4">
                     {existingImages.map(img => (
                       <div key={img.id} className="relative w-32">
-                        <img src={`${API_BASE}${img.image_url}`} alt={img.title} className="w-full h-24 object-cover rounded-lg" />
+                        <img src={img.image_url} alt={img.title} className="w-full h-24 object-cover rounded-lg" />
                         <p className="text-xs text-center mt-1 truncate">{img.title}</p>
                         <button type="button" onClick={() => toggleDeleteExistingImage(img.id)} className={`absolute top-1 right-1 p-1 rounded-full ${imagesToDelete.includes(img.id) ? 'bg-red-500' : 'bg-gray-800/70'} text-white`}><FiX size={12} /></button>
                       </div>
@@ -300,7 +300,7 @@ const Admin = () => {
             </form>
           </div>
 
-          {/* Projects List with Image Slideshow Preview */}
+          {/* Projects List with Image Slideshow Preview – using direct Cloudinary URLs */}
           <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Your Projects</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map(project => {
@@ -308,10 +308,9 @@ const Admin = () => {
               const currentPreviewIndex = previewIndex[project.id] || 0;
               return (
                 <div key={project.id} className="glass rounded-2xl p-5 flex flex-col">
-                  {/* Image Slideshow Preview */}
                   {images.length > 0 && (
                     <div className="relative mb-3 rounded-lg overflow-hidden h-32 bg-gray-200 dark:bg-gray-700">
-                      <img src={`${API_BASE}${images[currentPreviewIndex]?.image_url}`} alt={images[currentPreviewIndex]?.title || project.title} className="w-full h-full object-cover" />
+                      <img src={images[currentPreviewIndex]?.image_url} alt={images[currentPreviewIndex]?.title || project.title} className="w-full h-full object-cover" />
                       {images.length > 1 && (
                         <>
                           <button onClick={() => prevPreview(project.id, images.length)} className="absolute left-1 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/50 text-white hover:bg-black/70"><FiChevronLeft size={16} /></button>
