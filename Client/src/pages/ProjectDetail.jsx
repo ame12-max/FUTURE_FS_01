@@ -7,6 +7,14 @@ import Background3D from '../components/Background3D';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://future-fs-01-8c7x.onrender.com';
 
+// Helper: return absolute image URL (Cloudinary URLs are already absolute)
+const getImageUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  // For local uploads (stored as '/uploads/...')
+  return `${API_BASE}${url}`;
+};
+
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -127,7 +135,7 @@ const ProjectDetail = () => {
                   <AnimatePresence mode="wait">
                     <motion.img
                       key={imageIndex}
-                      src={currentImage ? `${API_BASE}${currentImage.image_url}` : ''}
+                      src={currentImage ? getImageUrl(currentImage.image_url) : ''}
                       alt={currentImage?.title || currentProject.title}
                       className="w-full h-auto object-cover"
                       initial={{ opacity: 0, x: 20 }}
