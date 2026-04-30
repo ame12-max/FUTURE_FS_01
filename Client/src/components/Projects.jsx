@@ -27,9 +27,12 @@ const Projects = () => {
           tags: project.tags ? (Array.isArray(project.tags) ? project.tags : project.tags.split(',').map(s => s.trim())) : [],
           technologies: project.technologies ? (Array.isArray(project.technologies) ? project.technologies : project.technologies.split(',').map(s => s.trim())) : [],
           features: project.features ? (Array.isArray(project.features) ? project.features : project.features.split(',').map(s => s.trim())) : [],
-          // Use first image from images array as main image
-          mainImage: project.images && project.images.length > 0 ? `${API_BASE}${project.images[0].image_url}` : null,
-          // Keep full images array for detail page
+          // Use first image from images array as main image (Cloudinary URLs are absolute; local ones need API_BASE)
+          mainImage: project.images && project.images.length > 0
+            ? (project.images[0].image_url.startsWith('http') 
+                ? project.images[0].image_url 
+                : `${API_BASE}${project.images[0].image_url}`)
+            : null,
           images: project.images || []
         }));
         setProjects(parsedProjects);
