@@ -22,7 +22,7 @@
     "mysql2": "^3.20.0",
     "nodemailer": "^8.0.4",
     "nodemon": "^3.1.14",
-    "cloudinary":"^2.0.0",
-    "multer-storage-cloudinary":"^4.0.0",
+    "cloudinary": "^2.0.0",
+    "multer-storage-cloudinary": "^4.0.0"
   }
 }
